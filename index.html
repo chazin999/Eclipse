@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Eclipse Counter</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    font-family: Arial;
+    margin: 0;
+    color: white;
+    text-align: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 15% 20%, rgba(99,102,241,0.35), transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(236,72,153,0.25), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(34,211,238,0.18), transparent 50%),
+        radial-gradient(circle at center, #020617 0%, #000 70%);
+}
+
+/* 🌌 ESTRELAS */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(white 2px, transparent 1px);
+
+    background-size: 40px 40px, 80px 80px, 140px 140px;
+    opacity: 0.6;
+    animation: starsMove 90s linear infinite;
+}
+
+/* 🌑 ECLIPSE */
+body::after {
+    content: "";
+    position: fixed;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle at 40% 40%,
+            rgba(255,255,255,0.9) 0%,
+            rgba(255,255,255,0.25) 15%,
+            rgba(0,0,0,0.95) 45%,
+            rgba(0,0,0,1) 70%);
+
+    box-shadow: 0 0 140px rgba(99,102,241,0.5);
+    animation: eclipsePulse 6s ease-in-out infinite;
+}
+
+body::before,
+body::after {
+    pointer-events: none;
+}
+
+h1, .box, .lista, .clear-all, .modal {
+    position: relative;
+    z-index: 2;
+}
+
+/* animações */
+@keyframes starsMove {
+    from { transform: translateY(0); }
+    to { transform: translateY(-300px); }
+}
+
+@keyframes eclipsePulse {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.85; }
+    50% { transform: translateX(-50%) scale(1.07); opacity: 0.65; }
+}
+
+/* ===== TÍTULO ===== */
+h1 {
+    margin: 20px;
+    color: #ef4444;
+}
+
+/* ===== PAINEL ===== */
+.box {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 18px;
+    width: 90%;
+    max-width: 380px;
+    margin: auto;
+}
+
+/* ===== INPUTS GALÁXIA PREMIUM ===== */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background: rgba(2, 6, 23, 0.85);
+    color: white;
+    font-size: 0.9em;
+
+    transition: 0.25s ease;
+    outline: none;
+
+    backdrop-filter: blur(6px);
+}
+
+input::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+/* brilho base */
+input:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 14px rgba(34, 197, 94, 0.7);
+    border-color: rgba(34, 197, 94, 0.9);
+}
+
+/* cores individuais */
+#nome:focus { box-shadow: 0 0 18px rgba(99,102,241,0.9); border-color: #6366f1; }
+#id:focus { box-shadow: 0 0 18px rgba(236,72,153,0.9); border-color: #ec4899; }
+#dias:focus { box-shadow: 0 0 18px rgba(34,211,238,0.9); border-color: #22d3ee; }
+#horas:focus { box-shadow: 0 0 18px rgba(59,130,246,0.9); border-color: #3b82f6; }
+#minutos:focus { box-shadow: 0 0 18px rgba(245,158,11,0.9); border-color: #f59e0b; }
+#segundos:focus { box-shadow: 0 0 18px rgba(239,68,68,0.9); border-color: #ef4444; }
+
+input:active { transform: scale(0.99); }
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* BOTÃO */
+button {
+    margin-top: 10px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+}
+
+/* LISTA */
+.lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    padding: 15px;
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+/* CARD */
+.card {
+    background: #0f172a;
+    padding: 14px;
+    border-radius: 12px;
+    text-align: left;
+    border-left: 4px solid #22c55e;
+}
+
+/* TIMER */
+.timer {
+    margin-top: 6px;
+    font-size: 1.1em;
+    color: #4ade80;
+}
+
+/* REMOVER */
+.remove {
+    margin-top: 10px;
+    background: #dc2626;
+    width: 100%;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    color: white;
+}
+
+/* REMOVER TODOS */
+.clear-all {
+    margin: 15px auto 25px;
+    width: 90%;
+    max-width: 380px;
+    background: linear-gradient(135deg, #dc2626, #7f1d1d);
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    display: none;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 15px;
+    width: 300px;
+}
+
+.modal-buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.cancel { background: #334155; flex: 1; }
+.confirm { background: #ef4444; flex: 1; }
+</style>
+</head>
+
+<body>
+
+<h1>ECLIPSE COUNTER</h1>
+
+<div class="box">
+    <input type="text" id="nome" placeholder="Nome do Produto">
+    <input type="text" id="id" placeholder="ID do Produto">
+
+    <div class="grid">
+        <input type="number" id="dias" placeholder="Dias">
+        <input type="number" id="horas" placeholder="Horas">
+        <input type="number" id="minutos" placeholder="Minutos">
+        <input type="number" id="segundos" placeholder="Segundos">
+    </div>
+
+    <button onclick="add()">Adicionar</button>
+</div>
+
+<div class="lista" id="lista"></div>
+
+<button class="clear-all" id="clearAllBtn" onclick="abrirModalTodos()">
+    🗑️ Remover todos
+</button>
+
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <h3>⚠️ Tem certeza?</h3>
+        <p id="modalText"></p>
+
+        <div class="modal-buttons">
+            <button class="cancel" onclick="fecharModal()">Cancelar</button>
+            <button class="confirm" onclick="confirmarRemocao()">Apagar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+let indexParaRemover = null;
+let limparTudo = false;
+
+function salvar() {
+    localStorage.setItem("produtos", JSON.stringify(produtos));
+}
+
+function atualizarBotao() {
+    document.getElementById("clearAllBtn").style.display =
+        produtos.length > 0 ? "block" : "none";
+}
+
+function add() {
+    let nome = document.getElementById("nome").value;
+    let id = document.getElementById("id").value;
+
+    let dias = +document.getElementById("dias").value || 0;
+    let horas = +document.getElementById("horas").value || 0;
+    let minutos = +document.getElementById("minutos").value || 0;
+    let segundos = +document.getElementById("segundos").value || 0;
+
+    let tempoFinal = Date.now() +
+        dias*86400000 +
+        horas*3600000 +
+        minutos*60000 +
+        segundos*1000;
+
+    produtos.push({ nome, id, tempoFinal });
+
+    salvar();
+    render();
+}
+
+function abrirModalTodos() {
+    limparTudo = true;
+    document.getElementById("modalText").innerText = "Apagar TODOS os produtos?";
+    document.getElementById("modal").style.display = "flex";
+}
+
+function abrirModal(i) {
+    limparTudo = false;
+    indexParaRemover = i;
+    document.getElementById("modalText").innerText = "Apagar este produto?";
+    document.getElementById("modal").style.display = "flex";
+}
+
+function fecharModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+function confirmarRemocao() {
+    if (limparTudo) produtos = [];
+    else produtos.splice(indexParaRemover, 1);
+
+    salvar();
+    render();
+    fecharModal();
+}
+
+function format(ms) {
+    let s = Math.floor(ms / 1000);
+    let d = Math.floor(s / 86400);
+    let h = Math.floor((s % 86400) / 3600);
+    let m = Math.floor((s % 3600) / 60);
+    let sec = s % 60;
+    return `${d}d ${h}h ${m}m ${sec}s`;
+}
+
+function render() {
+    let lista = document.getElementById("lista");
+    lista.innerHTML = "";
+
+    produtos.forEach((p, i) => {
+        lista.innerHTML += `
+            <div class="card">
+                <h3>${p.nome}</h3>
+                <div>ID: ${p.id}</div>
+                <div class="timer"></div>
+                <button class="remove" onclick="abrirModal(${i})">Remover</button>
+            </div>
+        `;
+    });
+
+    atualizarBotao();
+    atualizarTempos();
+}
+
+function atualizarTempos() {
+    produtos.forEach((p, i) => {
+        let el = document.querySelectorAll(".timer")[i];
+        if (!el) return;
+
+        let restante = p.tempoFinal - Date.now();
+        el.textContent = restante > 0 ? format(restante) : "Finalizado ⛔";
+    });
+}
+
+render();
+setInterval(atualizarTempos, 1000);
+</script>
+
+</body>
+</html>
