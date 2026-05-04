@@ -37,30 +37,7 @@ body::before {
     animation: starsMove 90s linear infinite;
 }
 
-/* 🌑 ECLIPSE */
-body::after {
-    content: "";
-    position: fixed;
-    top: 18%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 340px;
-    height: 340px;
-    border-radius: 50%;
-
-    background:
-        radial-gradient(circle at 40% 40%,
-            rgba(255,255,255,0.9) 0%,
-            rgba(255,255,255,0.25) 15%,
-            rgba(0,0,0,0.95) 45%,
-            rgba(0,0,0,1) 70%);
-
-    box-shadow: 0 0 140px rgba(99,102,241,0.5);
-    animation: eclipsePulse 6s ease-in-out infinite;
-}
-
-body::before,
-body::after {
+body::before {
     pointer-events: none;
 }
 
@@ -69,15 +46,10 @@ h1, .box, .lista, .clear-all, .modal {
     z-index: 2;
 }
 
-/* animações */
+/* animação estrelas */
 @keyframes starsMove {
     from { transform: translateY(0); }
     to { transform: translateY(-300px); }
-}
-
-@keyframes eclipsePulse {
-    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.85; }
-    50% { transform: translateX(-50%) scale(1.07); opacity: 0.65; }
 }
 
 /* ===== TÍTULO ===== */
@@ -96,7 +68,7 @@ h1 {
     margin: auto;
 }
 
-/* ===== INPUTS GALÁXIA PREMIUM ===== */
+/* ===== INPUTS PREMIUM ===== */
 input {
     width: 100%;
     padding: 12px;
@@ -119,7 +91,7 @@ input::placeholder {
     color: rgba(255,255,255,0.4);
 }
 
-/* brilho base */
+/* glow geral */
 input:focus {
     transform: scale(1.02);
     box-shadow: 0 0 14px rgba(34, 197, 94, 0.7);
@@ -127,12 +99,12 @@ input:focus {
 }
 
 /* cores individuais */
-#nome:focus { box-shadow: 0 0 18px rgba(99,102,241,0.9); border-color: #6366f1; }
-#id:focus { box-shadow: 0 0 18px rgba(236,72,153,0.9); border-color: #ec4899; }
-#dias:focus { box-shadow: 0 0 18px rgba(34,211,238,0.9); border-color: #22d3ee; }
-#horas:focus { box-shadow: 0 0 18px rgba(59,130,246,0.9); border-color: #3b82f6; }
-#minutos:focus { box-shadow: 0 0 18px rgba(245,158,11,0.9); border-color: #f59e0b; }
-#segundos:focus { box-shadow: 0 0 18px rgba(239,68,68,0.9); border-color: #ef4444; }
+#nome:focus { box-shadow: 0 0 18px rgba(99,102,241,0.9); border-color:#6366f1; }
+#id:focus { box-shadow: 0 0 18px rgba(236,72,153,0.9); border-color:#ec4899; }
+#dias:focus { box-shadow: 0 0 18px rgba(34,211,238,0.9); border-color:#22d3ee; }
+#horas:focus { box-shadow: 0 0 18px rgba(59,130,246,0.9); border-color:#3b82f6; }
+#minutos:focus { box-shadow: 0 0 18px rgba(245,158,11,0.9); border-color:#f59e0b; }
+#segundos:focus { box-shadow: 0 0 18px rgba(239,68,68,0.9); border-color:#ef4444; }
 
 input:active { transform: scale(0.99); }
 
@@ -192,7 +164,7 @@ button {
     color: white;
 }
 
-/* REMOVER TODOS */
+/* BOTÃO REMOVER TODOS */
 .clear-all {
     margin: 15px auto 25px;
     width: 90%;
